@@ -14,6 +14,17 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
+                .onAppear() {
+                    PokeApi().getData() { pokemon in
+                        print("Number of pokemons: \(pokemon.count)")
+                        for pokemon in pokemon {
+                            print(pokemon.name)
+                        }
+                    }
+                    PokemonSelectedApi().getData(url: "https://pokeapi.co/api/v2/pokemon/1/") { url in
+                        print("Sprites of bulbasur -> \(url)")
+                    }
+                }
         }
         .padding()
     }
