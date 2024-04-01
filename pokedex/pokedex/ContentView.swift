@@ -8,11 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var pokemon = [PokemonEntry]()
+    @State var searhText = ""
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+            NavigationView {
+                List {
+                    ForEach(searhText == "" ? pokemon : pokemon.filter( {
+                        $0.name.contains(searhText.lowercased())
+                    })) { entry in
+                        HStack {
+                            PokemonImage(imageLink: "\(entry.url)")
+                                .padding(.trailing, 25)
+                            NavigationLink(
+                                "\(entry.name.capitalized)",
+                                destination: Text("Detail view for \(entry.name)")
+                            )
+                        }
+                    }
+                }
+                .onAppear {
+                    PokeApi().getData() { pokemon in
+                        self.pokemon = pokemon
+                    }
+                }
+                .searchable(text: $searhText)
+                .navigationTitle("PokedexUI")
+            }
+            /* Review api work and get data
             Text("Hello, world!")
                 .onAppear() {
                     PokeApi().getData() { pokemon in
@@ -25,8 +50,8 @@ struct ContentView: View {
                         print("Sprites of bulbasur -> \(url)")
                     }
                 }
+             */
         }
-        .padding()
     }
 }
 
