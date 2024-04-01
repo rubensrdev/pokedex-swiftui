@@ -24,7 +24,12 @@ struct ContentView: View {
                                 .padding(.trailing, 25)
                             NavigationLink(
                                 "\(entry.name.capitalized)",
-                                destination: Text("Detail view for \(entry.name)")
+                                destination: 
+                                    //Text("Detail view for \(entry.name)")
+                                    PokemonDetailView(
+                                        pokemonName: entry.name,
+                                        pokemonImage: PokemonImage(imageLink: "\(entry.url)")
+                                    )
                             )
                         }
                     }
